@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM content loaded')
     addRamen()
     newRamen()
+    addNewRamen()
 })
 function addRamen() {
     fetch ('http://localhost:3000/ramens')
@@ -24,19 +25,36 @@ function addRamen() {
 
     })
 }
+const ramenObj = {}
+    ramenObj.name = document.getElementById('new-name').value;
+    ramenObj.restaurant = document.getElementById('new-restaurant').value;
+    ramenObj.image = document.getElementById('new-image').value;
+    ramenObj.rating = document.getElementById('new-rating').value;
+    ramenObj.comment = document.getElementById('new-comment').value;
+
 function newRamen() {
     const form=document.querySelector('#new-ramen')
     form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const ramenObj = {}
-            ramenObj.name = document.getElementById('new-name').value;
-            ramenObj.restaurant = document.getElementById('new-restaurant').value;
-            ramenObj.image = document.getElementById('new-image').value;
-            ramenObj.rating = document.getElementById('new-rating').value;
-            ramenObj.comment = document.getElementById('new-comment').value;
-        const newImg = document.createElement('img')
-        newImg.src= ramenObj.image
-        document.querySelector('#ramen-menu').append(newImg);
-
+    event.preventDefault();
+    const ramenObj = {}
+        ramenObj.name = document.getElementById('new-name').value;
+        ramenObj.restaurant = document.getElementById('new-restaurant').value;
+        ramenObj.image = document.getElementById('new-image').value;
+        ramenObj.rating = document.getElementById('new-rating').value;
+        ramenObj.comment = document.getElementById('new-comment').value;
+    const newImg = document.createElement('img')
+    newImg.src= ramenObj.image
+    document.querySelector('#ramen-menu').append(newImg);
     })
+}
+function addNewRamen() {
+    fetch('http://localhost:3000/ramens',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(ramenObj),
+    })
+    .then(resp => resp.json())
+    .then(data => console.log(data))
 }
